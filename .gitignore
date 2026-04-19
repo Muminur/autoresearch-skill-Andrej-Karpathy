@@ -1,0 +1,60 @@
+# Claude Code / tooling metadata — must never be pushed
+CLAUDE.md
+claude.md
+.claude/
+.omc/
+.serena/
+.cursor/
+.windsurf/
+
+# Project planning / internal docs (keep out of public skill repo)
+PLANNING.md
+planning.md
+TASKS.md
+tasks.md
+PRD.md
+PRD.docx
+PLAN.md
+plan.md
+*.prd
+*.tasks
+
+# Credentials, secrets, env files
+.env
+.env.*
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.json
+service-account*.json
+id_rsa*
+*.p12
+
+# Iteration artefacts — belong in consumer projects, not the skill repo
+autoresearch/data/
+autoresearch/results.tsv
+autoresearch/.regression-baseline
+benchmark.py
+benchmark.mjs
+benchmark.sh
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.iml
+
+# Python / Node build artefacts
+__pycache__/
+*.pyc
+*.pyo
+node_modules/
+dist/
+build/
+*.egg-info/
