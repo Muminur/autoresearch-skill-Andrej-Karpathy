@@ -139,7 +139,7 @@ commit    metric     avg_latency_ms  status      description
 
 ```mermaid
 flowchart TD
-    A["/autoresearch &lt;goal&gt;"] --> B[Parse goal → 7 slots]
+    A["/autoresearch [goal]"] --> B[Parse goal → 7 slots]
     B --> C{"corpus<br/>required?"}
     C -- yes --> D[📦 Phase A<br/>Ingest real data]
     C -- no --> E[🛠️ Phase B<br/>Build harness]
@@ -232,18 +232,18 @@ sequenceDiagram
     participant Repo
     participant Tests
 
-    User->>Claude: /autoresearch &lt;goal&gt;
+    User->>Claude: /autoresearch [goal]
     Claude->>Claude: Parse goal → 7 slots
     Claude->>User: Print parsed-slot dump
 
     Note over Claude,Repo: 📦 Phase A — Corpus Ingestion
     Claude->>Repo: Scrape/locate real data
     Claude->>Repo: Write autoresearch/data/*.jsonl
-    Claude-->>User: corpus: N cases from &lt;source&gt;
+    Claude-->>User: corpus N cases from source
 
     Note over Claude,Repo: 🛠️ Phase B — Harness Construction
     Claude->>Repo: Write benchmark.py (single file)
-    Claude->>Claude: verify stdout == "metric: &lt;float&gt;"
+    Claude->>Claude: verify stdout starts with metric:
 
     Note over Claude,Repo: 📐 Phase C — Baseline Capture
     Claude->>Repo: Run benchmark.py
