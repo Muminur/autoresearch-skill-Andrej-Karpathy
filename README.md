@@ -135,6 +135,163 @@ commit    metric     avg_latency_ms  status      description
 
 ---
 
+## 🔌 Use with other AI coding assistants
+
+The skill is plain Markdown — drop it into any agent that supports custom prompts, rules, or instructions. Clone the repo once to a staging location, then symlink or copy into each tool's config path:
+
+```bash
+git clone https://github.com/Muminur/autoresearch-skill-Andrej-Karpathy.git ~/autoresearch-skill
+```
+
+On Windows substitute `%USERPROFILE%\autoresearch-skill` for `~/autoresearch-skill` in the commands below.
+
+<br/>
+
+### 🧠 OpenAI Codex CLI
+
+[Codex CLI](https://github.com/openai/codex) loads custom prompts from `~/.codex/prompts/`.
+
+```bash
+mkdir -p ~/.codex/prompts
+cp    ~/autoresearch-skill/SKILL.md  ~/.codex/prompts/autoresearch.md
+cp -r ~/autoresearch-skill/references ~/.codex/prompts/
+```
+
+Invoke in Codex chat: `/autoresearch reduce API p95 to 200ms`.
+
+> 💡 **Tip** — add `@file ~/.codex/prompts/autoresearch.md` to `~/.codex/AGENTS.md` to keep the rubric pre-loaded in every session.
+
+<br/>
+
+### 🤖 GitHub Copilot (VS Code & JetBrains)
+
+Copilot Chat supports **prompt files** (`*.prompt.md`) and **instructions files** (`*.instructions.md`).
+
+**Project-scoped** (checked into the repo):
+```bash
+mkdir -p .github/prompts
+cp    ~/autoresearch-skill/SKILL.md  .github/prompts/autoresearch.prompt.md
+cp -r ~/autoresearch-skill/references .github/prompts/
+```
+
+**User-scoped** (available in every project):
+| OS | Path |
+|----|------|
+| Windows | `%APPDATA%\Code\User\prompts\autoresearch.prompt.md` |
+| macOS | `~/Library/Application Support/Code/User/prompts/autoresearch.prompt.md` |
+| Linux | `~/.config/Code/User/prompts/autoresearch.prompt.md` |
+
+Enable prompt files in VS Code `settings.json`:
+```jsonc
+{ "chat.promptFiles": true }
+```
+
+Invoke: `/autoresearch <goal>` in Copilot Chat.
+
+<br/>
+
+### 🪐 OpenCode
+
+[OpenCode](https://github.com/sst/opencode) keeps custom commands at `~/.config/opencode/command/`.
+
+```bash
+mkdir -p ~/.config/opencode/command
+cp    ~/autoresearch-skill/SKILL.md  ~/.config/opencode/command/autoresearch.md
+cp -r ~/autoresearch-skill/references ~/.config/opencode/command/
+```
+
+Invoke: `/autoresearch <goal>` in OpenCode.
+
+<br/>
+
+### ⚡ Cursor
+
+Cursor loads **rules** from `.cursor/rules/*.mdc`.
+
+```bash
+mkdir -p .cursor/rules
+cp    ~/autoresearch-skill/SKILL.md  .cursor/rules/autoresearch.mdc
+cp -r ~/autoresearch-skill/references .cursor/rules/
+```
+
+Prepend this frontmatter to `.cursor/rules/autoresearch.mdc`:
+
+```markdown
+---
+description: Autonomous goal-directed iteration
+globs:
+alwaysApply: false
+---
+```
+
+Invoke: `@autoresearch reduce API p95 to 200ms` in Cursor Chat (the `@rule` syntax attaches the rule to the prompt).
+
+For a **global install** across every project, use Cursor's *Settings → Rules → User Rules* pane and paste the skill content.
+
+<br/>
+
+### 🌊 Windsurf
+
+Windsurf loads **rules/workflows** from `.windsurf/rules/`.
+
+```bash
+mkdir -p .windsurf/rules
+cp    ~/autoresearch-skill/SKILL.md  .windsurf/rules/autoresearch.md
+cp -r ~/autoresearch-skill/references .windsurf/rules/
+```
+
+Prepend this frontmatter:
+
+```markdown
+---
+trigger: manual
+description: Autonomous goal-directed iteration
+---
+```
+
+Invoke: `@autoresearch reduce bundle size below 200KB` in Windsurf Chat.
+
+For **global** scope, drop the files in `~/.windsurf/rules/` instead of the project-local path.
+
+<br/>
+
+### 📝 Vanilla VS Code / Continue / any Markdown-aware chat
+
+Any extension that respects `.github/copilot-instructions.md` (e.g. GitHub Copilot Chat, Cline, Roo Code):
+
+```bash
+mkdir -p .github
+cat ~/autoresearch-skill/SKILL.md >> .github/copilot-instructions.md
+```
+
+For [Continue](https://continue.dev):
+
+```bash
+mkdir -p ~/.continue/commands
+cp ~/autoresearch-skill/SKILL.md ~/.continue/commands/autoresearch.md
+```
+
+Then prompt the assistant: *"Apply the autoresearch skill to reduce p95 to 200ms"* — the full playbook is already in context.
+
+<br/>
+
+### 🧾 Compatibility matrix
+
+| Tool | Install path | Invocation |
+|------|--------------|-----------|
+| Claude Code | `~/.claude/skills/autoresearch/` | `/autoresearch <goal>` |
+| OpenAI Codex CLI | `~/.codex/prompts/` | `/autoresearch <goal>` |
+| GitHub Copilot | `.github/prompts/` · user prompts dir | `/autoresearch <goal>` |
+| OpenCode | `~/.config/opencode/command/` | `/autoresearch <goal>` |
+| Cursor | `.cursor/rules/*.mdc` | `@autoresearch <goal>` |
+| Windsurf | `.windsurf/rules/` | `@autoresearch <goal>` |
+| Continue | `~/.continue/commands/` | `/autoresearch <goal>` |
+| Cline / Roo Code | `.github/copilot-instructions.md` | natural language |
+
+> ⚠️ **Note** — `/autoresearch` works autonomously. For best results use a model with strong agentic and long-context capabilities (Claude Opus/Sonnet 4+, GPT-4.1+, Gemini 2.5 Pro).
+
+---
+
 ## 🧭 How it works
 
 ```mermaid
